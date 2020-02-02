@@ -5,13 +5,17 @@ Employee Data Entry
 class Input extends React.Component{
     state={
         employee:"",
-        designation:""
+        designation:"",
+        mail:""
     }
     inputChangeHandleName(event){
       this.setState({employee:event.target.value});
     }
     inputChangeHandledesg(event){
       this.setState({designation:event.target.value});
+    }
+    inputChangeHandlemail(event){
+      this.setState({mail:event.target.value});
     }
 
     render(){
@@ -25,10 +29,31 @@ class Input extends React.Component{
                 <div className="mui-textfield">
                 <input type="text" onChange={(event)=>{this.inputChangeHandledesg(event)}} value={this.state.designation} placeholder="Designation"/>
                 </div>
-                <button onClick={()=>{this.props.addList(this.state)}} className="mui-btn mui-btn--raised mui-btn--primary">save</button>
+                <div className="mui-textfield">
+                <input type="text" onChange={(event)=>{this.inputChangeHandlemail(event)}} value={this.state.mail} placeholder="Mail-Id"/>
+                </div>
+                <button onClick={(e)=>{
+                      this.props.addList(this.state);
+                      e.preventDefault();
+                      
+                    }} className="mui-btn mui-btn--raised mui-btn--primary">save</button>
                 </form>
                 </div>
            );
+    }
+}
+class ListItem extends React.Component{
+    constructor(props){
+      super(props)
+    }
+    render(){
+        return(
+        <div>
+        <span   className="mui--text-menu" style={{margin: 2 + 'em'}}>{this.props.todo.employee.toUpperCase()}</span>
+        <span   className="mui--text-menu" style={{margin: 3+ 'em'}}>{this.props.todo.designation.toUpperCase()}</span>
+        <span   className="mui--text-menu" style={{margin: 3+ 'em'}}>{this.props.todo.mail.toUpperCase()}</span>
+        </div>
+        )
     }
 }
 class List extends React.Component{
@@ -42,18 +67,17 @@ class List extends React.Component{
                 <div className="mui-panel">
                     <span className="mui--text-menu" style={{margin: 2 + 'em'}}>EMPLOYEE</span>
                     <span className="mui--text-menu" style={{margin: 2 + 'em'}}>DESIGNATION</span>
+                    <span className="mui--text-menu" style={{margin: 9 + 'em'}}>MAIL</span>
                     </div>                
-                {this.props.todos.map((todo,index)=>{
-                  return(<div key={index} className="mui-panel">
-                    <span   className="mui--text-menu" style={{margin: 2 + 'em'}}>{todo.employee.toUpperCase()}</span>
-                    <span   className="mui--text-menu" style={{margin: 3+ 'em'}}>{todo.designation.toUpperCase()}</span>
-                  </div>);
+                    {this.props.todos.map((todo,index)=>{
+                    return(<div key={index} className="mui-panel">
+                    <ListItem todo={todo}/>      
+                </div>);
                 })
                }
             </div>
         )
     }
-
 }
 class Wrapper extends React.Component{
     constructor(props){
@@ -63,7 +87,8 @@ class Wrapper extends React.Component{
     state={
         todos:[{
             employee:"shikhar",
-            designation:"electrical"
+            designation:"Electrical Engineer",
+            mail:"officialshikharid@gmail.com"
         }]
     }
     addToDoList(todo){
